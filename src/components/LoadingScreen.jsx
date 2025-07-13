@@ -50,21 +50,23 @@ export default function LoadingScreen() {
         fadeOut ? 'opacity-0' : 'opacity-100'
       } bg-black`}
     >
-      <div className="flex flex-col items-center gap-10">
-        <div className="loading-text text-center font-arcade">
+      <div className="flex flex-col items-center gap-6 px-4 sm:px-6 w-full max-w-[95vw] sm:max-w-[400px]">
+        <div className="loading-text font-arcade text-xs sm:text-sm md:text-base text-center">
           {loadingMessages[textIndex]}
         </div>
-        <div className="flex gap-[10px]">
+
+        <div className="flex gap-[4px] sm:gap-[6px] md:gap-[10px]">
           {[...Array(totalBlocks)].map((_, idx) => (
             <div
               key={idx}
-              className={`w-8 h-8 md:w-10 md:h-10 ${
+              className={`w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 ${
                 idx < blocksFilled ? 'bg-yellow-400 box-glow' : 'bg-white'
               }`}
             ></div>
           ))}
         </div>
-        <div className="progress-number text-yellow-300 font-arcade text-sm mt-2 opacity-80">
+
+        <div className="progress-number text-yellow-300 font-arcade text-xs sm:text-sm mt-1 sm:mt-2 opacity-80">
           {progress}%
         </div>
       </div>
