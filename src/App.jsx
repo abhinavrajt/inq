@@ -5,10 +5,12 @@ import Events from './components/Events'
 import TicketsSection from './components/TicketsSection'
 import Sponsors from './components/Sponsors'
 import Footer from './components/Footer'
+import LoadingScreen from './components/LoadingScreen'
 
 function App() {
   return (
     <div className="overflow-x-hidden font-sans bg-[#0a0a10]">
+      <LoadingScreen />
       {/* Top Hero Section */}
       <Hero />
 

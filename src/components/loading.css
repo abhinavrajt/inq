@@ -1,0 +1,36 @@
+@font-face {
+  font-family: 'PressStart2P';
+  src: url('https://fonts.gstatic.com/s/pressstart2p/v12/e3t4euO8T-267oIAQAu6jDQyK3nQGrM.woff2')
+    format('woff2');
+}
+
+.font-arcade {
+  font-family: 'PressStart2P', monospace;
+}
+
+.loading-text {
+  font-size: 18px;
+  color: #facc15;
+  text-shadow:
+    0 0 6px #facc15,
+    0 0 12px #facc15,
+    0 0 24px #facc15;
+  background-color: rgba(255, 255, 0, 0.05);
+  padding: 16px 32px;
+  border: 3px solid #facc15;
+  box-shadow:
+    0 0 12px #facc15,
+    inset 0 0 6px #facc15;
+  border-radius: 6px;
+}
+
+.box-glow {
+  box-shadow:
+    0 0 6px #facc15,
+    0 0 12px #facc15;
+}
+
+.progress-number {
+  font-size: 14px;
+  text-shadow: 0 0 4px #facc15;
+}
