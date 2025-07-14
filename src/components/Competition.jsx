@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const competitions = [
   { title: 'Code Royale', image: 'events/a.png', description: 'Compete in intense coding battles and win exciting prizes.', price: '₹199', registerLink: '#' },
@@ -14,13 +14,22 @@ export default function Competition() {
   const [selected, setSelected] = useState(null);
   const [showShareOverlay, setShowShareOverlay] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-  }, []);
+
+    if (location.hash) {
+      const decoded = decodeURIComponent(location.hash.slice(1)).replace(/-/g, ' ').toLowerCase();
+      const match = competitions.find(e => e.title.toLowerCase() === decoded);
+      if (match) {
+        setSelected(match);
+      }
+    }
+  }, [location.hash]);
 
   const handleShare = (event) => {
-    const url = `${window.location.origin}/#${encodeURIComponent(event.title.replace(/\s+/g, '-'))}`;
+    const url = `${window.location.origin}/competition#${encodeURIComponent(event.title.replace(/\s+/g, '-'))}`;
     if (navigator.share) {
       navigator.share({ title: event.title, text: event.description, url }).catch(console.error);
     } else if (navigator.clipboard) {
@@ -41,7 +50,7 @@ export default function Competition() {
   };
 
   return (
-    <div className="event-section min-h-screen px-4 md:px-10 py-20 text-white relative z-10">
+    <div className="event-section min-h-screen px-4 md:px-10 py-20 text-white relative z-10 overflow-x-hidden overflow-y-auto">
       {/* Background */}
       <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle,_rgba(255,255,255,0.07)_1px,_transparent_1px)] bg-[length:150px_150px]"></div>
       <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_center,_rgba(0,255,255,0.1),_transparent_70%)] mix-blend-screen"></div>
@@ -111,7 +120,10 @@ export default function Competition() {
           <div className="relative bg-[#0d0d16] border border-cyan-500 shadow-2xl rounded-xl p-6 w-[90%] max-w-md text-white">
             <button
               className="absolute top-3 right-4 text-2xl text-cyan-300 hover:text-white transition"
-              onClick={() => setSelected(null)}
+              onClick={() => {
+                setSelected(null);
+                navigate('/competition', { replace: true });
+              }}
             >
               ✕
             </button>
@@ -142,7 +154,7 @@ export default function Competition() {
           <div className="bg-[#12121a] text-white p-6 rounded-xl border border-cyan-500 shadow-xl text-center max-w-xs w-full">
             <p className="text-sm mb-4">Copy this link manually:</p>
             <div className="bg-gray-800 px-3 py-2 rounded text-xs break-all mb-4">
-              {`${window.location.origin}/#${encodeURIComponent(selected.title.replace(/\s+/g, '-'))}`}
+              {`${window.location.origin}/competition#${encodeURIComponent(selected.title.replace(/\s+/g, '-'))}`}
             </div>
             <button
               onClick={() => setShowShareOverlay(false)}

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './loading.css'
 
 const loadingMessages = [
@@ -15,12 +16,15 @@ export default function LoadingScreen() {
   const [fadeOut, setFadeOut] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [textIndex, setTextIndex] = useState(0)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const alreadyLoaded = sessionStorage.getItem('appLoaded')
+    const lastPath = sessionStorage.getItem('lastVisitedPath')
 
+    // Show loading screen only on refresh or first visit
     if (alreadyLoaded) {
-      setLoaded(true) // Skip loading screen if already loaded
+      setLoaded(true)
       return
     }
 
@@ -31,7 +35,10 @@ export default function LoadingScreen() {
           setFadeOut(true)
           setTimeout(() => {
             setLoaded(true)
-            sessionStorage.setItem('appLoaded', 'true') // Mark loaded for this session
+            sessionStorage.setItem('appLoaded', 'true')
+            if (lastPath && lastPath !== window.location.pathname) {
+              navigate(lastPath, { replace: true })
+            }
           }, 1000)
           return 100
         }
@@ -47,7 +54,7 @@ export default function LoadingScreen() {
       clearInterval(progressInterval)
       clearInterval(textCycleInterval)
     }
-  }, [])
+  }, [navigate])
 
   if (loaded) return null
 

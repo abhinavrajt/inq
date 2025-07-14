@@ -1,5 +1,11 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 
 // Full Landing Page Components
 import Hero from './components/Hero';
@@ -15,6 +21,7 @@ import Workshop from './components/Workshop';
 import Competition from './components/Competition';
 import Lectures from './components/Lectures';
 
+// Component to scroll to hash fragment on route change
 function ScrollToHash() {
   const location = useLocation();
 
@@ -23,8 +30,19 @@ function ScrollToHash() {
       setTimeout(() => {
         const el = document.getElementById(location.hash.slice(1));
         if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }, 100); // give time for DOM to mount
+      }, 100);
     }
+  }, [location]);
+
+  return null;
+}
+
+// Component to track last visited route and save in sessionStorage
+function TrackRouteChange() {
+  const location = useLocation();
+
+  useEffect(() => {
+    sessionStorage.setItem('lastVisitedPath', location.pathname);
   }, [location]);
 
   return null;
@@ -33,7 +51,6 @@ function ScrollToHash() {
 function FullLandingPage() {
   return (
     <>
-      <LoadingScreen />
       <Hero />
       <ScrollIntro />
       <Events />
@@ -44,10 +61,12 @@ function FullLandingPage() {
   );
 }
 
-function App() {
+function AppContent() {
   return (
-    <Router>
+    <>
       <ScrollToHash />
+      <TrackRouteChange />
+      <LoadingScreen />
       <div className="overflow-x-hidden font-sans bg-[#0a0a10]">
         <Routes>
           <Route path="/" element={<FullLandingPage />} />
@@ -56,6 +75,14 @@ function App() {
           <Route path="/lectures" element={<Lectures />} />
         </Routes>
       </div>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }
