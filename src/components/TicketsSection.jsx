@@ -6,7 +6,7 @@ const tickets = [
     image: '/images/ticket-day1.png',
     date: 'Oct 25, 2024',
     price: '₹199',
-    events: ['Automotive Summit', 'Glitch Tathva', 'Tech Conclave'],
+    events: ['Automotive Summit', 'dfdf', 'Tech Conclave'],
   },
   {
     title: 'Day 2',
