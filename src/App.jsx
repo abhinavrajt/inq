@@ -4,7 +4,6 @@ import {
   Routes,
   Route,
   useLocation,
-  useNavigate,
 } from 'react-router-dom';
 
 // Full Landing Page Components
@@ -21,7 +20,7 @@ import Workshop from './components/Workshop';
 import Competition from './components/Competition';
 import Lectures from './components/Lectures';
 
-// Component to scroll to hash fragment on route change
+// Scroll to the hash fragment in URL
 function ScrollToHash() {
   const location = useLocation();
 
@@ -37,7 +36,7 @@ function ScrollToHash() {
   return null;
 }
 
-// Component to track last visited route and save in sessionStorage
+// Save the last visited route (optional helper)
 function TrackRouteChange() {
   const location = useLocation();
 
@@ -48,6 +47,7 @@ function TrackRouteChange() {
   return null;
 }
 
+// Landing page composed of sections
 function FullLandingPage() {
   return (
     <>
@@ -61,13 +61,19 @@ function FullLandingPage() {
   );
 }
 
+// Main app content
 function AppContent() {
   return (
     <>
       <ScrollToHash />
       <TrackRouteChange />
       <LoadingScreen />
-      <div className="overflow-x-hidden font-sans bg-[#0a0a10]">
+
+      {/* ✅ Fixed background grid */}
+      <div className="static-grid" />
+
+      {/* App layout wrapper */}
+      <div className="relative z-10 overflow-x-hidden font-sans bg-[#0a0a10]">
         <Routes>
           <Route path="/" element={<FullLandingPage />} />
           <Route path="/workshop" element={<Workshop />} />
@@ -79,6 +85,7 @@ function AppContent() {
   );
 }
 
+// Wrap everything in Router
 function App() {
   return (
     <Router>
