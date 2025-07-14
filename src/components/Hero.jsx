@@ -60,13 +60,13 @@ export default function Hero() {
           ref={titleRef}
           className="text-[64px] md:text-[100px] font-extrabold tracking-wider text-yellow-300 drop-shadow-lg pixel-font"
         >
-          INQUA 25
+          NOT
         </h1>
         <p
           ref={subtitleRef}
           className="mt-4 text-lg md:text-2xl font-mono text-blue-300"
         >
-          Start the mission. Play the future.
+          .....
         </p>
       </div>
     </section>

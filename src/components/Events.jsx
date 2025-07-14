@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // ✅ Add this for routing
 
 const events = {
   workshops: [
@@ -30,6 +31,7 @@ const events = {
 export default function Events() {
   const [selected, setSelected] = useState(null);
   const [showShareOverlay, setShowShareOverlay] = useState(false);
+  const navigate = useNavigate(); // ✅ For programmatic routing
 
   useEffect(() => {
     const hash = decodeURIComponent(window.location.hash.slice(1));
@@ -80,43 +82,56 @@ export default function Events() {
       </div>
     ));
 
-  const Section = ({ title, items }) => (
-    <div className="mb-20 sm:mb-32 relative z-10">
-      <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold pixel-font mt-6 sm:mt-20 mb-2 sm:mb-6 section-title text-center">
-        {title.split('').map((char, i) => (
-          <span
-            key={i}
-            className="inline-block animate-wave-char text-blue-400"
-            style={{
-              animationDelay: `${i * 0.1}s`,
-              animationDuration: '1.5s',
-              animationTimingFunction: 'ease-in-out',
-              animationIterationCount: 'infinite',
-            }}
+  const Section = ({ title, items }) => {
+    const getPath = (name) => {
+      if (name === 'Workshops') return '/workshop';
+      if (name === 'Competitions') return '/competition';
+      if (name === 'Lectures') return '/lectures';
+      return '/';
+    };
+
+    return (
+      <div className="mb-20 sm:mb-32 relative z-10">
+        <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold pixel-font mt-6 sm:mt-20 mb-2 sm:mb-6 section-title text-center">
+          {title.split('').map((char, i) => (
+            <span
+              key={i}
+              className="inline-block animate-wave-char text-blue-400"
+              style={{
+                animationDelay: `${i * 0.1}s`,
+                animationDuration: '1.5s',
+                animationTimingFunction: 'ease-in-out',
+                animationIterationCount: 'infinite',
+              }}
+            >
+              {char}
+            </span>
+          ))}
+        </h2>
+
+        <div className="overflow-x-auto overflow-y-hidden flex gap-4 sm:gap-6 px-4 md:px-8 pb-2 mt-0 snap-x snap-mandatory scroll-smooth scrollbar-horizontal custom-scrollbar">
+          {renderCards(items)}
+        </div>
+
+        <div className="flex justify-center mt-6 sm:mt-10">
+          <button
+            onClick={() => navigate(getPath(title))}
+            className="btn-glow text-xs md:text-base px-4 py-2 md:px-6 md:py-2.5 rounded-xl"
           >
-            {char}
-          </span>
-        ))}
-      </h2>
-
-      <div className="overflow-x-auto overflow-y-hidden flex gap-4 sm:gap-6 px-4 md:px-8 pb-2 mt-0 snap-x snap-mandatory scroll-smooth scrollbar-horizontal custom-scrollbar">
-        {renderCards(items)}
+            Explore More {title}
+          </button>
+        </div>
       </div>
-
-      <div className="flex justify-center mt-6 sm:mt-10">
-        <button className="btn-glow text-xs md:text-base px-4 py-2 md:px-6 md:py-2.5 rounded-xl">
-          Explore More {title}
-        </button>
-      </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <section className="event-section relative px-4 md:px-10 py-20 text-white overflow-hidden" id="tickets">
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle,_rgba(255,255,255,0.04)_1px,_transparent_1px)] bg-[length:100px_100px] animate-gridMove"></div>
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_rgba(0,255,255,0.08),_transparent_70%)] mix-blend-screen" style={{ transform: 'translateY(-10%)', willChange: 'transform' }}></div>
+      {/* Background */}
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle,_rgba(255,255,255,0.07)_1px,_transparent_1px)] bg-[length:150px_150px] animate-gridMove mask-radial"></div>
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_rgba(0,255,255,0.1),_transparent_70%)] mix-blend-screen" style={{ transform: 'translateY(-10%)', willChange: 'transform' }}></div>
       <div className="absolute w-[200%] h-[200%] -top-[50%] -left-[50%] z-0 overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => (
+        {[...Array(50)].map((_, i) => (
           <div
             key={i}
             className="absolute w-2 h-2 bg-cyan-400 rounded-full opacity-40 blur-sm animate-float"
@@ -130,12 +145,14 @@ export default function Events() {
         ))}
       </div>
 
+      {/* Section Content */}
       <div className="relative z-10">
         <Section title="Workshops" items={events.workshops} />
         <Section title="Competitions" items={events.competitions} />
         <Section title="Lectures" items={events.lectures} />
       </div>
 
+      {/* Modal */}
       {selected && (
         <div className="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm z-50 flex items-center justify-center">
           <div className="relative bg-[#0d0d16] border border-cyan-500 shadow-2xl rounded-xl p-6 w-[90%] max-w-md text-white">
@@ -162,7 +179,6 @@ export default function Events() {
                 className="text-cyan-300 hover:text-white transition text-xl"
                 title="Share"
               >
-                {/* ⬇️ New Share Icon */}
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M13 5.828V13a1 1 0 1 1-2 0V5.828L8.707 8.121a1 1 0 0 1-1.414-1.414l4.243-4.243a1 1 0 0 1 1.414 0l4.243 4.243a1 1 0 0 1-1.414 1.414L13 5.828z"/>
                   <path d="M5 11a1 1 0 0 0-1 1v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6a1 1 0 1 0-2 0v6H7v-6a1 1 0 0 0-1-1z"/>
@@ -173,6 +189,7 @@ export default function Events() {
         </div>
       )}
 
+      {/* Share Fallback */}
       {showShareOverlay && (
         <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center">
           <div className="bg-[#12121a] text-white p-6 rounded-xl border border-cyan-500 shadow-xl text-center max-w-xs w-full">

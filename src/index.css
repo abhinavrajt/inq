@@ -12,9 +12,16 @@ body {
 
 /* Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
 
 .pixel-font {
   font-family: 'Press Start 2P', monospace;
+}
+.neon-text {
+  font-family: 'Orbitron', sans-serif;
+  text-shadow: 0 0 5px #00f7ff, 0 0 10px #00f7ff, 0 0 15px #00d0ff;
+  transition: text-shadow 0.3s ease-in-out;
+  animation: pulseNeon 2.5s infinite alternate;
 }
 
 /* Scrollbars */
@@ -31,7 +38,6 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #444;
 }
-
 .custom-scrollbar::-webkit-scrollbar {
   height: 6px;
 }
@@ -85,7 +91,7 @@ body {
   box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
 }
 
-/* Animated background */
+/* Event Section Background Grid */
 .event-section {
   background-color: #0a0a10;
   position: relative;
@@ -96,25 +102,61 @@ body {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 50px 50px;
+    linear-gradient(to right, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 90px 90px;
   z-index: 0;
+
+  /* Fade out grid lines at corners */
+  -webkit-mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
+  mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 100%);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-in;
 }
 .event-section::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, rgba(0, 255, 255, 0.05), transparent 70%);
+  background: radial-gradient(circle at center, rgba(0, 255, 255, 0.1), transparent 70%);
   z-index: 0;
   mix-blend-mode: screen;
 }
 
-/* Title animation */
+/* Floating Glowing Particles with Hex Shape + Twinkling */
+.animate-float {
+  animation: floatUp 6s infinite ease-in-out, twinkle 3s infinite ease-in-out;
+  clip-path: polygon(
+    25% 6.7%, 75% 6.7%,
+    100% 50%, 75% 93.3%,
+    25% 93.3%, 0% 50%
+  ); /* Hexagon shape */
+  box-shadow: 0 0 6px #00f7ff, 0 0 12px #00f7ff, 0 0 20px #00d0ff;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+    box-shadow: 0 0 6px #00f7ff;
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+    box-shadow: 0 0 10px #00ffff, 0 0 20px #00f7ff;
+  }
+}
+
+/* Title Animation */
 @keyframes wave-char {
   0%, 100% {
     transform: translateY(0);
-    color: #60a5fa; /* default blue-400 */
+    color: #60a5fa;
   }
   50% {
     transform: translateY(-8px);
@@ -128,14 +170,6 @@ body {
   animation-timing-function: ease-in-out;
   display: inline-block;
 }
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
-
-.neon-text {
-  font-family: 'Orbitron', sans-serif;
-  text-shadow: 0 0 5px #00f7ff, 0 0 10px #00f7ff, 0 0 15px #00d0ff;
-  transition: text-shadow 0.3s ease-in-out;
-  animation: pulseNeon 2.5s infinite alternate;
-}
 
 @keyframes pulseNeon {
   0% {
@@ -145,25 +179,19 @@ body {
     text-shadow: 0 0 15px #00f7ff, 0 0 25px #00d0ff;
   }
 }
+
+/* Marquee */
 @keyframes marquee {
   0% { transform: translateX(0%); }
   100% { transform: translateX(-50%); }
 }
-
 .animate-marquee {
   display: inline-block;
   min-width: 200%;
   animation: marquee 20s linear infinite;
 }
-.barcode-pattern {
-  background-image: repeating-linear-gradient(
-    to right,
-    #000,
-    #000 2px,
-    transparent 2px,
-    transparent 4px
-  );
-}
+
+/* Ticket Styling */
 .ticket-style {
   position: relative;
   background: linear-gradient(to bottom, #111, #000);
@@ -176,7 +204,6 @@ body {
   padding: 1.5rem;
   box-shadow: inset 0 0 8px #ffffff22;
 }
-
 .ticket-style::before,
 .ticket-style::after {
   content: '';
@@ -184,20 +211,19 @@ body {
   top: 20px;
   bottom: 20px;
   width: 20px;
-  background: radial-gradient(circle, transparent 10px, white 10px);
+  background: radial-gradient(circle, transparent 30px, white 10px);
   background-size: 100% 40px;
   background-repeat: repeat-y;
   z-index: 10;
 }
-
 .ticket-style::before {
   left: -10px;
 }
-
 .ticket-style::after {
   right: -10px;
 }
 
+/* Fade-in */
 @keyframes fade-in {
   from { opacity: 0; transform: translate(-50%, 20px); }
   to { opacity: 1; transform: translate(-50%, 0); }

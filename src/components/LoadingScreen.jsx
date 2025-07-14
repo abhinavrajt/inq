@@ -17,12 +17,22 @@ export default function LoadingScreen() {
   const [textIndex, setTextIndex] = useState(0)
 
   useEffect(() => {
+    const alreadyLoaded = sessionStorage.getItem('appLoaded')
+
+    if (alreadyLoaded) {
+      setLoaded(true) // Skip loading screen if already loaded
+      return
+    }
+
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(progressInterval)
           setFadeOut(true)
-          setTimeout(() => setLoaded(true), 1000)
+          setTimeout(() => {
+            setLoaded(true)
+            sessionStorage.setItem('appLoaded', 'true') // Mark loaded for this session
+          }, 1000)
           return 100
         }
         return prev + 1
