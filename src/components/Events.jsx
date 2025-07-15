@@ -13,8 +13,10 @@ export default function Events() {
     { image: 'events/lectures-thumb.png', path: '/lectures' },
   ];
 
-  const { ref: titleRef, inView: titleInView } = useInView({ triggerOnce: true, threshold: 0.3 });
-  const { ref: cardsRef, inView: cardsInView } = useInView({ triggerOnce: true, threshold: 0.3 });
+  const { ref: titleRef, inView: titleInView } = useInView({
+    triggerOnce: true,
+    threshold: 0.3,
+  });
 
   return (
     <section
@@ -23,7 +25,10 @@ export default function Events() {
     >
       {/* Background Particles */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(0,255,255,0.12),_transparent_70%)] mix-blend-screen" style={{ transform: 'translateY(-10%)' }}></div>
+        <div
+          className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(0,255,255,0.12),_transparent_70%)] mix-blend-screen"
+          style={{ transform: 'translateY(-10%)' }}
+        />
         <div className="absolute w-[200%] h-[200%] -top-[50%] -left-[50%] overflow-hidden z-0">
           {[...Array(60)].map((_, i) => (
             <div
@@ -45,7 +50,9 @@ export default function Events() {
         ref={titleRef}
         className={clsx(
           'font-pixel text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-center leading-tight mb-16 transition-all duration-1000 ease-out',
-          titleInView ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-90'
+          titleInView
+            ? 'opacity-100 translate-y-0 scale-100'
+            : 'opacity-0 translate-y-10 scale-90'
         )}
       >
         Discover What
@@ -53,26 +60,31 @@ export default function Events() {
         <span className="text-cyan-300">We Have for You!</span>
       </h2>
 
-      {/* Cards */}
-      <div
-        ref={cardsRef}
-        className={clsx(
-          'flex flex-col sm:flex-row justify-center items-center gap-8 px-4 mt-10 md:mt-20 flex-wrap transition-all duration-1000 ease-out delay-200',
-          cardsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-        )}
-      >
+      {/* Cards - scroll animated individually */}
+      <div className="flex flex-col sm:flex-row justify-center items-center gap-8 px-4 mt-10 md:mt-20 flex-wrap w-full">
         {cards.map((card, index) => {
-          const isOtherCardHovered = hoveredIndex !== null && hoveredIndex !== index;
+          const { ref: cardRef, inView: cardInView } = useInView({
+            triggerOnce: false,
+            threshold: 0.5,
+          });
+
+          const isOtherCardHovered =
+            hoveredIndex !== null && hoveredIndex !== index;
+
           return (
             <div
               key={index}
+              ref={cardRef}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
               onClick={() => navigate(card.path)}
               className={clsx(
-                'cursor-pointer transition-all duration-500 ease-in-out w-[260px] sm:w-[280px] md:w-[300px] h-[300px] rounded-xl overflow-hidden border border-cyan-400 bg-[#111118] shadow-xl',
+                'cursor-pointer transition-all duration-700 ease-in-out w-[260px] h-[260px] sm:w-[280px] sm:h-[280px] md:w-[300px] md:h-[300px] rounded-xl overflow-hidden border border-cyan-400 bg-[#111118] shadow-xl',
                 isOtherCardHovered &&
-                  'scale-90 blur-sm rotate-[-3deg] brightness-75 shadow-inner'
+                  'scale-90 blur-sm rotate-[-3deg] brightness-75 shadow-inner',
+                cardInView
+                  ? 'opacity-100 translate-y-0 scale-100'
+                  : 'opacity-0 translate-y-12 scale-95'
               )}
             >
               <img
@@ -86,8 +98,7 @@ export default function Events() {
       </div>
 
       {/* Bottom Text */}
-        <h2 className="font-pixel text-xl sm:text-2xl md:text-3xl lg:text-4xl text-center mt-20 lg:mt-32 text-white">
-
+      <h2 className="font-pixel text-xl sm:text-2xl md:text-3xl lg:text-4xl text-center mt-20 lg:mt-32 text-white">
         And much more...
       </h2>
     </section>
