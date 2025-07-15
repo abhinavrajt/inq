@@ -8,13 +8,14 @@ export default {
     extend: {
       fontFamily: {
         mono: ['"JetBrains Mono"', 'monospace'],
+        pixel: ['"Press Start 2P"', 'system-ui', 'monospace'], // or your custom pixel font name
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'grid': 'radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px)', // ✅ static grid
+        'grid': 'radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px)',
       },
       backgroundSize: {
-        'grid': '120px 120px', // ✅ for bg-grid
+        grid: '120px 120px',
       },
       animation: {
         'spin-slow': 'spin 2s linear infinite',

@@ -237,3 +237,18 @@ body {
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
 }
+@keyframes floatUp {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100vh);
+  }
+}
+
+.animate-floatUp {
+  animation-name: floatUp;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: 5s;
+}
