@@ -36,24 +36,22 @@ function ScrollToHash() {
   return null;
 }
 
-// Save the last visited route (optional helper)
+// Optional: Track current route
 function TrackRouteChange() {
   const location = useLocation();
-
   useEffect(() => {
     sessionStorage.setItem('lastVisitedPath', location.pathname);
   }, [location]);
-
   return null;
 }
 
-// Landing page composed of sections
+// Combined landing sections
 function FullLandingPage() {
   return (
     <>
       <Hero />
       <ScrollIntro />
-      <Events />
+      <Events /> {/* ✅ GridParticles will render only inside this */}
       <TicketsSection />
       <Sponsors />
       <Footer />
@@ -61,7 +59,7 @@ function FullLandingPage() {
   );
 }
 
-// Main app content
+// Main content layout
 function AppContent() {
   return (
     <>
@@ -69,11 +67,7 @@ function AppContent() {
       <TrackRouteChange />
       <LoadingScreen />
 
-      {/* ✅ Fixed background grid */}
-      <div className="static-grid" />
-
-      {/* App layout wrapper */}
-      <div className="relative z-10 overflow-x-hidden font-sans bg-[#0a0a10]">
+      <div className="relative z-0 overflow-x-hidden font-sans bg-[#0a0a10]">
         <Routes>
           <Route path="/" element={<FullLandingPage />} />
           <Route path="/workshop" element={<Workshop />} />
@@ -85,7 +79,7 @@ function AppContent() {
   );
 }
 
-// Wrap everything in Router
+// Router wrapper
 function App() {
   return (
     <Router>

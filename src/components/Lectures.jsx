@@ -1,5 +1,7 @@
+// Lectures.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import GridParticles from './GridParticles';
 
 const lectures = [
   { title: 'Quantum Computing Demystified', image: 'events/a.png', description: 'Understand the basics and potential of quantum computing in simple terms.', price: 'Free', registerLink: '#' },
@@ -53,37 +55,27 @@ export default function Lectures() {
 
   return (
     <div className="event-section min-h-screen px-4 md:px-10 py-20 pb-10 text-white relative z-10 overflow-x-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle,_rgba(255,255,255,0.07)_1px,_transparent_1px)] bg-[length:150px_150px]"></div>
-      <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_center,_rgba(0,255,255,0.1),_transparent_70%)] mix-blend-screen"></div>
-      <div className="absolute w-[200%] h-[200%] -top-[50%] -left-[50%] z-0 overflow-hidden pointer-events-none">
-        {[...Array(50)].map((_, i) => (
-          <div key={i} className="absolute w-2 h-2 bg-cyan-400 rounded-full opacity-40 blur-sm animate-float"
-            style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 6}s`,
-              animationDuration: `${4 + Math.random() * 6}s`,
-            }}
-          />
-        ))}
-      </div>
+      <GridParticles />
 
       {/* Title */}
-      <h1 className="text-center text-3xl sm:text-5xl font-bold pixel-font mb-10 z-10 relative">
-        {'Lectures'.split('').map((char, i) => (
-          <span key={i} className="inline-block animate-wave-char text-blue-400"
-            style={{
-              animationDelay: `${i * 0.1}s`,
-              animationDuration: '1.5s',
-              animationTimingFunction: 'ease-in-out',
-              animationIterationCount: 'infinite',
-            }}
-          >
-            {char}
-          </span>
-        ))}
-      </h1>
+      <h1 className="text-center text-2xl sm:text-5xl font-bold pixel-font z-10 relative leading-none">
+  {'Lectures'.split('').map((char, i) => (
+    <span
+      key={i}
+      className="inline-block animate-wave-char text-blue-400"
+      style={{
+        animationDelay: `${i * 0.1}s`,
+        animationDuration: '1.5s',
+        animationTimingFunction: 'ease-in-out',
+        animationIterationCount: 'infinite',
+      }}
+    >
+      {char}
+    </span>
+  ))}
+</h1>
+<div className="w-24 h-1 bg-blue-400 mx-auto mt-2 mb-8 rounded-full" />
+
 
       {/* Cards */}
       <div className="z-10 relative flex flex-wrap justify-center gap-6 max-w-[900px] mx-auto">

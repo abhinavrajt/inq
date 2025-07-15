@@ -51,35 +51,46 @@ export default function TicketsSection() {
       </p>
 
       {/* === Ticket Cards === */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[40px] max-w-[1200px] mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 max-w-[1300px] mx-auto">
         {tickets.map((ticket, i) => (
           <div
             key={i}
-            className="ticket-style flex flex-col justify-between border-2 border-white p-4 
-              h-[800px] sm:h-[680px] w-[285px] sm:w-full sm:max-w-[260px] 
-              mx-auto hover:shadow-[0_0_30px_#ffffff33] 
-              transition-transform hover:scale-105 duration-300"
+            className="relative bg-[#0f0f0f] border-2 border-white rounded-[20px] shadow-[0_0_40px_#00ffff33] overflow-hidden
+              flex flex-col justify-between px-6 py-6 w-[285px] sm:max-w-[260px] mx-auto hover:scale-105 transition-all duration-300 group"
+            style={{
+              background: 'linear-gradient(145deg, #1a1a1a, #0d0d0d)',
+            }}
           >
-            <h3 className="text-white text-4xl sm:text-3xl font-extrabold mb-4 tracking-widest">
+            {/* === Punch-hole Circles === */}
+            <div className="absolute left-[-12px] top-12 h-6 w-6 bg-black rounded-full border-2 border-white z-10" />
+            <div className="absolute left-[-12px] bottom-12 h-6 w-6 bg-black rounded-full border-2 border-white z-10" />
+            <div className="absolute right-[-12px] top-12 h-6 w-6 bg-black rounded-full border-2 border-white z-10" />
+            <div className="absolute right-[-12px] bottom-12 h-6 w-6 bg-black rounded-full border-2 border-white z-10" />
+
+            {/* === Title === */}
+            <h3 className="text-4xl font-bold text-white tracking-widest text-center mb-4 font-mono">
               {ticket.title.toUpperCase()}
             </h3>
 
-            {/* Ticket Image */}
+            {/* === Image === */}
             <img
               src={ticket.image}
               alt={ticket.title}
-              className="mx-auto object-cover border border-white rounded mb-4"
-              style={{ height: '274px', width: '220px' }}
+              className="mx-auto object-cover border border-white rounded-lg shadow-md"
+              style={{ height: '240px', width: '100%' }}
             />
 
-            {/* Date */}
-            <p className="text-lg sm:text-base text-gray-400 mb-4 text-center">{ticket.date}</p>
+            {/* === Date === */}
+            <p className="text-md text-gray-400 mt-4">{ticket.date}</p>
 
-            {/* Dotted Divider */}
-            <div className="border-t border-dashed border-white mb-4 w-full"></div>
+            {/* === Tear Line === */}
+            <div className="border-t border-dashed border-white my-4 relative">
+              <div className="absolute left-[-8px] top-[-6px] w-4 h-4 bg-black border-2 border-white rounded-full" />
+              <div className="absolute right-[-8px] top-[-6px] w-4 h-4 bg-black border-2 border-white rounded-full" />
+            </div>
 
-            {/* Events */}
-            <ul className="text-left space-y-2 text-lg sm:text-base mb-6 px-2 font-medium">
+            {/* === Events === */}
+            <ul className="text-left space-y-2 text-base font-medium px-1">
               {ticket.events.map((event, idx) => (
                 <li
                   key={idx}
@@ -90,23 +101,25 @@ export default function TicketsSection() {
               ))}
             </ul>
 
-            {/* Buy Button */}
+            {/* === Buy Now Button === */}
             <a
               href="#"
-              className="flex justify-between items-center px-4 py-3 border border-white rounded-md text-lg sm:text-base text-white font-bold hover:bg-white hover:text-black transition duration-300"
+              className="mt-6 flex justify-between items-center px-4 py-3 border-2 border-white rounded-md text-base text-white font-bold 
+                hover:bg-white hover:text-black transition duration-300"
             >
               <span className="text-red-500">Buy Now</span>
               <span>{ticket.price}</span>
             </a>
 
-            {/* Barcode */}
-            <div className="bg-white p-1 rounded-sm border border-black w-fit mx-auto mt-2">
+            {/* === Barcode === */}
+            <div className="bg-white px-3 py-2 rounded-md border border-black w-fit mx-auto mt-6 shadow-lg">
               <img
                 src="https://barcode.tec-it.com/barcode.ashx?data=Inqua-cetkr&multiplebarcodes=true&translate-esc=on"
                 alt="Ticket Barcode"
                 className="mx-auto"
-                style={{ height: '50px', width: '160px' }}
+                style={{ height: '50px', width: '160px', filter: 'contrast(1.2)' }}
               />
+              <p className="text-xs text-black text-center font-mono mt-1">Inqua-cetkr</p>
             </div>
           </div>
         ))}

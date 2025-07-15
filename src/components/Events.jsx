@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // ✅ Add this for routing
+import { useNavigate } from 'react-router-dom';
 
 const events = {
   workshops: [
@@ -31,7 +31,7 @@ const events = {
 export default function Events() {
   const [selected, setSelected] = useState(null);
   const [showShareOverlay, setShowShareOverlay] = useState(false);
-  const navigate = useNavigate(); // ✅ For programmatic routing
+  const navigate = useNavigate();
 
   useEffect(() => {
     const hash = decodeURIComponent(window.location.hash.slice(1));
@@ -44,23 +44,18 @@ export default function Events() {
     }
   }, []);
 
-  const isMobile = () =>
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-  const showToast = (message) => {
-    const toast = document.createElement('div');
-    toast.className = 'fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-black text-white px-4 py-2 rounded-lg shadow-md z-50';
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 2500);
-  };
-
   const handleShare = (event) => {
     const url = `${window.location.origin}/#${encodeURIComponent(event.title.replace(/\s+/g, '-'))}`;
-    if (isMobile() && navigator.share) {
+    if (navigator.share) {
       navigator.share({ title: event.title, text: event.description, url }).catch(console.error);
     } else if (navigator.clipboard) {
-      navigator.clipboard.writeText(url).then(() => showToast('Link copied to clipboard!'));
+      navigator.clipboard.writeText(url).then(() => {
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-black text-white px-4 py-2 rounded-lg shadow-md z-50';
+        toast.textContent = 'Link copied to clipboard!';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2500);
+      });
     } else {
       setShowShareOverlay(true);
     }
@@ -100,19 +95,17 @@ export default function Events() {
               style={{
                 animationDelay: `${i * 0.1}s`,
                 animationDuration: '1.5s',
-                animationTimingFunction: 'ease-in-out',
                 animationIterationCount: 'infinite',
+                animationTimingFunction: 'ease-in-out',
               }}
             >
               {char}
             </span>
           ))}
         </h2>
-
-        <div className="overflow-x-auto overflow-y-hidden flex gap-4 sm:gap-6 px-4 md:px-8 pb-2 mt-0 snap-x snap-mandatory scroll-smooth scrollbar-horizontal custom-scrollbar">
+        <div className="overflow-x-auto flex gap-4 sm:gap-6 px-4 md:px-8 pb-2 mt-0 snap-x snap-mandatory scroll-smooth scrollbar-horizontal custom-scrollbar">
           {renderCards(items)}
         </div>
-
         <div className="flex justify-center mt-6 sm:mt-10">
           <button
             onClick={() => navigate(getPath(title))}
@@ -126,26 +119,36 @@ export default function Events() {
   };
 
   return (
-    <section className="event-section relative px-4 md:px-10 py-20 text-white overflow-hidden" id="tickets">
-      {/* Background */}
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle,_rgba(255,255,255,0.07)_1px,_transparent_1px)] bg-[length:150px_150px] animate-gridMove mask-radial"></div>
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_rgba(0,255,255,0.1),_transparent_70%)] mix-blend-screen" style={{ transform: 'translateY(-10%)', willChange: 'transform' }}></div>
-      <div className="absolute w-[200%] h-[200%] -top-[50%] -left-[50%] z-0 overflow-hidden pointer-events-none">
-        {[...Array(50)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-2 h-2 bg-cyan-400 rounded-full opacity-40 blur-sm animate-float"
-            style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 6}s`,
-              animationDuration: `${4 + Math.random() * 6}s`,
-            }}
-          ></div>
-        ))}
+    <section className="event-section relative px-4 md:px-10 py-20 text-white overflow-hidden min-h-screen" id="tickets">
+      {/* 🌐 Grid background wrapper */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        {/* 🟦 Grid lines (larger 80px spacing) */}
+        <div className="absolute inset-0 bg-[length:80px_80px] bg-[linear-gradient(to_right,_rgba(0,255,255,0.08)_1px,_transparent_1px),_linear-gradient(to_bottom,_rgba(0,255,255,0.08)_1px,_transparent_1px)]"></div>
+
+        {/* 🌌 Radial mask for dissolving edges */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(0,0,0,0)_0%,_rgba(0,0,0,0.6)_80%,_black_100%)] z-10"></div>
+
+        {/* 💫 Cyan radial center glow */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(0,255,255,0.12),_transparent_70%)] mix-blend-screen" style={{ transform: 'translateY(-10%)' }}></div>
+
+        {/* 🔵 Floating dots */}
+        <div className="absolute w-[200%] h-[200%] -top-[50%] -left-[50%] overflow-hidden z-0">
+          {[...Array(60)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-2 h-2 bg-cyan-300 opacity-40 rounded-full blur-sm animate-floatUp"
+              style={{
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 5}s`,
+                animationDuration: `${5 + Math.random() * 5}s`,
+              }}
+            ></div>
+          ))}
+        </div>
       </div>
 
-      {/* Section Content */}
+      {/* Sections */}
       <div className="relative z-10">
         <Section title="Workshops" items={events.workshops} />
         <Section title="Competitions" items={events.competitions} />
@@ -162,16 +165,10 @@ export default function Events() {
             >
               ✕
             </button>
-            <div className="w-full aspect-square mb-4">
-              <img
-                src={selected.image}
-                alt={selected.title}
-                className="w-full h-full object-cover rounded-lg border border-cyan-800"
-              />
-            </div>
-            <h3 className="text-xl font-bold mb-2 text-cyan-300">{selected.title}</h3>
-            <p className="text-sm text-gray-300 mb-2">{selected.description}</p>
-            <p className="text-md font-semibold text-yellow-400 mb-4">{selected.price}</p>
+            <img src={selected.image} alt={selected.title} className="w-full rounded-lg mb-4" />
+            <h3 className="text-xl font-bold text-cyan-300">{selected.title}</h3>
+            <p className="text-sm text-gray-300 my-2">{selected.description}</p>
+            <p className="text-yellow-400 font-semibold mb-4">{selected.price}</p>
             <div className="flex items-center gap-3">
               <a href={selected.registerLink} className="btn-glow inline-block text-sm">Register</a>
               <button
@@ -189,18 +186,15 @@ export default function Events() {
         </div>
       )}
 
-      {/* Share Fallback */}
-      {showShareOverlay && (
+      {/* Share Overlay */}
+      {showShareOverlay && selected && (
         <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center">
           <div className="bg-[#12121a] text-white p-6 rounded-xl border border-cyan-500 shadow-xl text-center max-w-xs w-full">
             <p className="text-sm mb-4">Copy this link manually:</p>
             <div className="bg-gray-800 px-3 py-2 rounded text-xs break-all mb-4">
-              {`${window.location.origin}/#${encodeURIComponent(selected?.title.replace(/\s+/g, '-'))}`}
+              {`${window.location.origin}/#${encodeURIComponent(selected.title.replace(/\s+/g, '-'))}`}
             </div>
-            <button
-              onClick={() => setShowShareOverlay(false)}
-              className="btn-glow px-4 py-1.5 text-sm"
-            >
+            <button onClick={() => setShowShareOverlay(false)} className="btn-glow px-4 py-1.5 text-sm">
               Got it
             </button>
           </div>

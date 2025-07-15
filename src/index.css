@@ -91,35 +91,11 @@ body {
   box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
 }
 
-/* Event Section Background Grid */
+/* Event Section (no grid here now!) */
 .event-section {
   background-color: #0a0a10;
   position: relative;
   overflow: hidden;
-}
-.event-section::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
-  background-size: 90px 90px;
-  z-index: 0;
-
-  /* Fade out grid lines at corners */
-  -webkit-mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
-  mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 100%);
-  mask-composite: exclude;
-  -webkit-mask-composite: destination-in;
-}
-.event-section::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center, rgba(0, 255, 255, 0.1), transparent 70%);
-  z-index: 0;
-  mix-blend-mode: screen;
 }
 
 /* Floating Glowing Particles with Hex Shape + Twinkling */
@@ -231,21 +207,33 @@ body {
 .animate-fade-in {
   animation: fade-in 0.3s ease-out forwards;
 }
-.static-grid {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 0;
-  pointer-events: none;
+@layer utilities {
+  .bg-grid-pattern {
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
-    radial-gradient(circle at center, rgba(0, 255, 255, 0.1), transparent 70%);
-  background-size: 90px 90px, 90px 90px, cover;
-  background-repeat: repeat;
-  background-attachment: fixed;
-  mix-blend-mode: screen;
+    linear-gradient(to right, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
 }
 
+
+  .fade-grid-mask {
+    -webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
+    mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 100%);
+    -webkit-mask-composite: destination-in;
+    mask-composite: intersect;
+    mask-repeat: no-repeat;
+    mask-size: cover;
+  }
+}
+@keyframes drift {
+  0%   { transform: translate(0px, 0px); }
+  25%  { transform: translate(-20px, 15px); }
+  50%  { transform: translate(15px, -25px); }
+  75%  { transform: translate(-10px, -10px); }
+  100% { transform: translate(0px, 0px); }
+}
+
+.animate-drift {
+  animation-name: drift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}

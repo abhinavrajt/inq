@@ -7,17 +7,22 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        mono: ['"JetBrains Mono"', 'monospace'], // clean tech-style font
+        mono: ['"JetBrains Mono"', 'monospace'],
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'grid': 'radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px)', // ✅ static grid
+      },
+      backgroundSize: {
+        'grid': '120px 120px', // ✅ for bg-grid
       },
       animation: {
         'spin-slow': 'spin 2s linear infinite',
         'glow': 'glowPulse 2s ease-in-out infinite',
-        'gridMove': 'gridMove 20s linear infinite',
+        'gridMove': 'gridMove 40s linear infinite',
         'pulseSlow': 'pulse 6s ease-in-out infinite',
         'float': 'float 6s ease-in-out infinite',
+        'floatUp': 'floatUp 8s linear infinite',
       },
       keyframes: {
         glowPulse: {
@@ -40,8 +45,12 @@ export default {
             transform: 'translateY(-20px)',
           },
         },
+        floatUp: {
+          '0%': { transform: 'translateY(0)' },
+          '100%': { transform: 'translateY(-100vh)' },
+        },
       },
     },
   },
   plugins: [],
-}
+};
